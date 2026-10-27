@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial EPC — MAX Autoparts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050706;
+    --bg-2:#0a0f0c;
+    --card:#0d1410;
+    --line:rgba(255,255,255,.08);
+    --text:#eef2ef;
+    --muted:#8d9a93;
+    --green:#337A55;
+    --green-2:#3fa36e;
+    --green-glow:#4fd68c;
+    --silver:#cfd6d4;
+    --silver-2:#8a9493;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(5,7,6,.7);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
+  .brand small{display:block;font-size:9px;letter-spacing:3px;color:var(--green-glow);font-weight:600}
+  .links{display:flex;gap:28px;font-size:14px;color:var(--muted)}
+  .links a:hover{color:var(--text)}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:600;transition:.25s;cursor:pointer;border:1px solid transparent}
+  .btn-green{background:linear-gradient(180deg,var(--green-2),var(--green));color:#fff;box-shadow:0 0 0 1px rgba(79,214,140,.3) inset,0 8px 30px -8px rgba(63,163,110,.7)}
+  .btn-green:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(79,214,140,.5) inset,0 12px 36px -6px rgba(63,163,110,.9)}
+  .btn-ghost{background:rgba(255,255,255,.04);border-color:var(--line);color:var(--text)}
+  .btn-ghost:hover{background:rgba(255,255,255,.09)}
+  .btn-light{background:var(--silver);color:#0b0f0d}
+  .btn-light:hover{background:#fff}
+
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 5px;border-radius:99px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:12px;color:var(--muted)}
+  .pill b{background:var(--green);color:#fff;font-size:11px;padding:3px 10px;border-radius:99px;font-weight:600}
+
+  /* HERO */
+  .hero{position:relative;text-align:center;padding:96px 0 200px;overflow:hidden}
+  .hero h1{font-size:clamp(34px,6vw,64px);line-height:1.08;font-weight:700;letter-spacing:-1.5px;margin:24px 0 18px}
+  .hero h1 span{display:block;font-weight:300;font-size:.62em;color:var(--silver);letter-spacing:-.5px;margin-bottom:6px}
+  .hero h1 em{font-style:normal;background:linear-gradient(90deg,#fff,var(--silver) 40%,var(--green-glow));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{max-width:560px;margin:0 auto 32px;color:var(--muted);font-size:16px}
+  .hero .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .arc{position:absolute;left:50%;bottom:-560px;width:1300px;height:700px;transform:translateX(-50%);border-radius:50%;
+       background:radial-gradient(ellipse at 50% 0%,rgba(79,214,140,.55),rgba(51,122,85,.25) 35%,transparent 65%);
+       box-shadow:0 -2px 0 0 rgba(200,255,225,.9),0 -20px 80px 10px rgba(63,163,110,.6),0 -60px 160px 30px rgba(51,122,85,.35);
+       pointer-events:none}
+  .arc::after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--bg)}
+  .tags{position:relative;z-index:2;display:flex;gap:36px;justify-content:center;margin-top:70px;color:var(--silver-2);font-size:13px;letter-spacing:2px;font-weight:600;flex-wrap:wrap}
+
+  /* STATEMENT */
+  section{position:relative}
+  .statement{text-align:center;padding:110px 0 90px}
+  .statement h2{max-width:820px;margin:20px auto 30px;font-size:clamp(24px,3.6vw,36px);font-weight:500;line-height:1.35;letter-spacing:-.5px}
+  .statement h2 .fade{color:#5b6660}
+
+  /* FLOW ARC */
+  .flow{padding:80px 0 100px;text-align:center;overflow:hidden;background:radial-gradient(ellipse 60% 50% at 50% 55%,rgba(51,122,85,.22),transparent 70%)}
+  .orbit{position:relative;height:300px;max-width:860px;margin:0 auto}
+  .node{position:absolute;width:68px;height:68px;border-radius:18px;background:linear-gradient(145deg,#1a241e,#0b110d);border:1px solid rgba(255,255,255,.1);
+        display:grid;place-items:center;font-size:26px;box-shadow:0 10px 30px -10px rgba(0,0,0,.8),0 0 0 1px rgba(79,214,140,.08) inset;transform:translate(-50%,-50%) rotate(var(--r,0deg));transition:.3s}
+  .node:hover{border-color:var(--green-glow);box-shadow:0 0 30px -5px rgba(79,214,140,.6)}
+  .node span{transform:rotate(calc(var(--r,0deg) * -1))}
+  .flow-center{position:relative;margin-top:-150px;z-index:2}
+  .flow-center h2{font-size:clamp(28px,4vw,42px);font-weight:600;letter-spacing:-1px;margin:14px 0 10px}
+  .flow-center p{color:var(--muted);max-width:440px;margin:0 auto 24px;font-size:15px}
+
+  /* STEPS */
+  .head{text-align:center;margin-bottom:50px}
+  .head h2{font-size:clamp(26px,3.6vw,38px);font-weight:600;letter-spacing:-1px;margin-top:14px}
+  .head p{color:var(--muted);margin-top:10px}
+  .steps{padding:90px 0}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:linear-gradient(180deg,var(--card),#080c0a);border:1px solid var(--line);border-radius:20px;padding:28px;position:relative;overflow:hidden;transition:.3s}
+  .card:hover{border-color:rgba(79,214,140,.35);transform:translateY(-4px)}
+  .card::before{content:"";position:absolute;top:-60px;left:50%;width:200px;height:120px;transform:translateX(-50%);background:radial-gradient(rgba(79,214,140,.18),transparent 70%)}
+  .ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;background:rgba(51,122,85,.25);border:1px solid rgba(79,214,140,.4);color:var(--green-glow);font-weight:700;box-shadow:0 0 24px -4px rgba(79,214,140,.6);position:relative}
+  .card h3{text-align:center;font-size:19px;font-weight:600;margin-bottom:8px}
+  .card p{text-align:center;color:var(--muted);font-size:14px}
+  .card ul{list-style:none;margin-top:18px;padding:16px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid var(--line);font-size:13px;color:var(--silver)}
+  .card li{padding:5px 0;display:flex;gap:8px}
+  .card li::before{content:"›";color:var(--green-glow);font-weight:700}
+
+  /* VIDEOS */
+  .videos{padding:90px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .vcard{border-radius:22px;padding:14px;background:linear-gradient(180deg,#0f1813,#070a08);border:1px solid var(--line);position:relative}
+  .vcard:hover{border-color:rgba(79,214,140,.35)}
+  .frame{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 0 60px -20px rgba(63,163,110,.6)}
+  .thumb{display:grid;place-items:center;cursor:pointer;
+         background:radial-gradient(ellipse 80% 90% at 50% 110%,rgba(79,214,140,.45),rgba(51,122,85,.2) 45%,#050806 80%);
+         border:1px solid rgba(79,214,140,.2)}
+  .thumb::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 48px)}
+  .thumb .big{position:absolute;top:14px;left:20px;font-size:64px;font-weight:800;letter-spacing:-3px;color:rgba(255,255,255,.07)}
+  .thumb .play{position:relative;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;color:#fff;padding-left:4px;
+         background:linear-gradient(180deg,var(--green-2),var(--green));box-shadow:0 0 0 8px rgba(79,214,140,.12),0 0 50px rgba(79,214,140,.6);transition:.3s}
+  .thumb:hover .play{transform:scale(1.1);box-shadow:0 0 0 12px rgba(79,214,140,.15),0 0 70px rgba(79,214,140,.8)}
+  .thumb .hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:12px;color:var(--silver)}
+
+  /* WhatsApp */
+  .wa-float{position:fixed;right:22px;bottom:22px;z-index:100;display:flex;align-items:center;gap:10px;padding:12px 18px 12px 12px;border-radius:99px;
+            background:#25D366;color:#fff;font-weight:600;font-size:14px;box-shadow:0 10px 30px -6px rgba(37,211,102,.6);transition:.25s}
+  .wa-float:hover{transform:translateY(-3px);box-shadow:0 14px 40px -6px rgba(37,211,102,.8)}
+  .wa-float svg{width:28px;height:28px}
+  .wa-float::before{content:"";position:absolute;inset:0;border-radius:99px;border:2px solid #25D366;animation:pulse 2s infinite}
+  @keyframes pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.25);opacity:0}}
+  .btn-wa{background:#25D366;color:#fff}
+  .btn-wa:hover{background:#1ebe5a;transform:translateY(-2px)}
+  .btn-wa svg{width:18px;height:18px}
+  @media (max-width:520px){.wa-float span{display:none}.wa-float{padding:14px}}
+  .vmeta{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 8px 6px}
+  .vmeta h3{font-size:17px;font-weight:600}
+  .vmeta p{font-size:13px;color:var(--muted)}
+  .num{font-size:12px;font-weight:700;color:var(--green-glow);letter-spacing:2px}
+  .open{font-size:12px;color:var(--silver);border:1px solid var(--line);padding:7px 12px;border-radius:8px;white-space:nowrap}
+  .open:hover{border-color:var(--green-glow);color:#fff}
+
+  /* TIPS */
+  .tips{padding:40px 0 90px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;border-top:1px solid var(--line);padding-top:40px}
+  .tip h4{font-size:14px;font-weight:600;display:flex;gap:8px;align-items:center;margin-bottom:6px}
+  .tip h4 i{font-style:normal;color:var(--green-glow)}
+  .tip p{font-size:13px;color:var(--muted)}
+
+  /* CTA */
+  .cta{margin:0 auto 70px;border-radius:26px;padding:70px 30px;text-align:center;position:relative;overflow:hidden;
+       background:radial-gradient(ellipse 70% 120% at 50% 0%,rgba(79,214,140,.55),rgba(51,122,85,.6) 30%,#0b1a12 75%);border:1px solid rgba(79,214,140,.3)}
+  .cta::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 60px);mask:linear-gradient(#000,transparent)}
+  .cta h2{position:relative;font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-1px}
+  .cta p{position:relative;color:#d6eadf;margin:12px auto 28px;max-width:480px}
+  .cta .btn{position:relative}
+
+  footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:900px){
+    .grid3{grid-template-columns:1fr}
+    .grid2{grid-template-columns:1fr}
+    .grid4{grid-template-columns:1fr 1fr}
+    .links{display:none}
+    .orbit{transform:scale(.62);transform-origin:top center;height:200px}
+    .flow-center{margin-top:-80px}
+  }
+  @media (max-width:520px){
+    .grid4{grid-template-columns:1fr}
+    nav .btn{display:none}
+    .hero{padding:70px 0 160px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="brand">
+      <svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true">
+        <defs><linearGradient id="gs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1f4f3"/><stop offset=".5" stop-color="#9aa3a2"/><stop offset="1" stop-color="#e3e8e7"/></linearGradient></defs>
+        <path fill="url(#gs)" d="M43 4h14l3 13 9 4 11-7 10 10-7 11 4 9 13 3v14l-13 3-4 9 7 11-10 10-11-7-9 4-3 13H43l-3-13-9-4-11 7-10-10 7-11-4-9-13-3V43l13-3 4-9-7-11 10-10 11 7 9-4z"/>
+        <circle cx="50" cy="50" r="22" fill="#050706"/>
+        <circle cx="50" cy="50" r="22" fill="none" stroke="#7d8786" stroke-width="5"/>
+      </svg>
+      <div>MAX<small>AUTOPARTS</small></div>
+    </a>
+    <div class="links">
+      <a href="#alur">Alur</a>
+      <a href="#langkah">Langkah</a>
+      <a href="#video">Video</a>
+      <a href="#tips">Tips</a>
+    </div>
+    <a href="#video" class="btn btn-green">Tonton Tutorial</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap reveal">
+    <span class="pill"><b>EPC</b> Panduan internal MAX Autoparts</span>
+    <h1><span>Tutorial Electronic Parts Catalogue</span><em>Temukan Part yang Tepat dari Setiap VIN</em></h1>
+    <p>Pelajari cara mencari data kendaraan, nomor OE, dan padanan part Asuki maupun aftermarket — lalu mengisinya ke template EPC dengan rapi dan konsisten.</p>
+    <div class="ctas">
+      <a href="#video" class="btn btn-light">▶ Mulai Tutorial</a>
+      <a href="#langkah" class="btn btn-ghost">Lihat Langkah</a>
+    </div>
+  </div>
+  <div class="arc"></div>
+  <div class="tags"><span>VIN</span><span>OE NUMBER</span><span>ASUKI</span><span>AFTERMARKET</span><span>EXCEL</span></div>
+</header>
+
+<!-- STATEMENT -->
+<section class="statement">
+  <div class="wrap reveal">
+    <span class="pill"><b>Tentang</b> Kenapa EPC penting</span>
+    <h2>Data part yang akurat adalah dasar penjualan yang cepat — <span class="fade">satu VIN, satu kebenaran, tanpa salah kirim dan tanpa retur yang tidak perlu.</span></h2>
+    <a href="#langkah" class="btn btn-green">Pelajari Alurnya</a>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="flow" id="alur">
+  <div class="orbit" id="orbit"></div>
+  <div class="flow-center reveal">
+    <span class="pill"><b>Alur</b> Dari VIN ke Excel</span>
+    <h2>Satu Alur, Lima Tahap.</h2>
+    <p>Setiap tahap saling terhubung — ikuti urutannya agar data yang masuk ke template selalu valid.</p>
+    <a href="#video" class="btn btn-green">Tonton Video</a>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps" id="langkah">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="pill"><b>Langkah</b> Step by step</span>
+      <h2>Cara Kerja EPC</h2>
+      <p>Ringkasan tahapan yang dijelaskan di video tutorial.</p>
+    </div>
+    <div class="grid3">
+      <div class="card reveal">
+        <div class="ic">1</div>
+        <h3>Identifikasi Kendaraan</h3>
+        <p>Masukkan VIN untuk mendapatkan data kendaraan dan daftar nomor OE.</p>
+        <ul>
+          <li>Buka dotoparts.com</li>
+          <li>Input 17 digit VIN</li>
+          <li>Catat merk, model, tahun & mesin</li>
+          <li>Salin nomor OE per kategori part</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="ic">2</div>
+        <h3>Cari Padanan Part</h3>
+        <p>Cocokkan nomor OE dengan produk Asuki dan aftermarket.</p>
+        <ul>
+          <li>Buka TecAlliance SEA</li>
+          <li>Cari berdasarkan nomor OE</li>
+          <li>Catat nomor part Asuki</li>
+          <li>Catat alternatif aftermarket</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="ic">3</div>
+        <h3>Isi Template EPC</h3>
+        <p>Rapikan semua data ke template Excel EPC yang standar.</p>
+        <ul>
+          <li>Tentukan Item Group tiap part</li>
+          <li>Isi kolom OE, Asuki, Aftermarket</li>
+          <li>Cek ulang duplikat & typo</li>
+          <li>Simpan & kirim file Excel</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section class="videos" id="video">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="pill"><b>Video</b> Tutorial lengkap</span>
+      <h2>Tonton & Praktikkan</h2>
+      <p>Klik video untuk membukanya di Google Drive.</p>
+    </div>
+    <div class="grid2">
+      <div class="vcard reveal">
+        <a class="frame thumb" href="https://drive.google.com/file/d/1QeGerR6Dj7K1baFwTXOX3pFNm3PdNrKI/view?usp=drive_link" target="_blank" rel="noopener" aria-label="Buka Video Tutorial EPC Bagian 1 di Google Drive">
+          <span class="big">01</span>
+          <span class="play"><svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></span>
+          <span class="hint">Klik untuk membuka di Google Drive ↗</span>
+        </a>
+        <div class="vmeta">
+          <div>
+            <div class="num">BAGIAN 01</div>
+            <h3>Tutorial EPC — Part 1</h3>
+            <p>Pengenalan & pencarian data kendaraan</p>
+          </div>
+          <a class="open" href="https://drive.google.com/file/d/1QeGerR6Dj7K1baFwTXOX3pFNm3PdNrKI/view?usp=drive_link" target="_blank" rel="noopener">Buka di Drive ↗</a>
+        </div>
+      </div>
+      <div class="vcard reveal">
+        <a class="frame thumb" href="https://drive.google.com/file/d/1J309m_nNwNh-hHJLiztivEWCM9ALUucu/view?usp=drive_link" target="_blank" rel="noopener" aria-label="Buka Video Tutorial EPC Bagian 2 di Google Drive">
+          <span class="big">02</span>
+          <span class="play"><svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></span>
+          <span class="hint">Klik untuk membuka di Google Drive ↗</span>
+        </a>
+        <div class="vmeta">
+          <div>
+            <div class="num">BAGIAN 02</div>
+            <h3>Tutorial EPC — Part 2</h3>
+            <p>Pencarian padanan & pengisian template</p>
+          </div>
+          <a class="open" href="https://drive.google.com/file/d/1J309m_nNwNh-hHJLiztivEWCM9ALUucu/view?usp=drive_link" target="_blank" rel="noopener">Buka di Drive ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section class="tips" id="tips">
+  <div class="wrap">
+    <div class="grid4 reveal">
+      <div class="tip"><h4><i>◆</i> Cek VIN Dua Kali</h4><p>Satu digit salah bisa mengubah seluruh hasil pencarian part.</p></div>
+      <div class="tip"><h4><i>◆</i> Prioritaskan OE</h4><p>Nomor OE adalah acuan utama sebelum mencari padanan.</p></div>
+      <div class="tip"><h4><i>◆</i> Konsisten Item Group</h4><p>Gunakan penamaan grup yang sama agar data mudah difilter.</p></div>
+      <div class="tip"><h4><i>◆</i> Simpan Bertahap</h4><p>Simpan template secara berkala agar progres tidak hilang.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="wrap">
+  <div class="cta reveal">
+    <h2>Siap Mengerjakan EPC?</h2>
+    <p>Mulai dari video pertama, ikuti langkahnya, dan hasilkan template EPC yang akurat. Ada pertanyaan? Hubungi kami lewat WhatsApp.</p>
+    <div style="position:relative;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://drive.google.com/file/d/1QeGerR6Dj7K1baFwTXOX3pFNm3PdNrKI/view?usp=drive_link" target="_blank" rel="noopener" class="btn btn-light">▶ Buka Video 1</a>
+      <a href="https://wa.me/6285780696102?text=Halo%2C%20saya%20ingin%20bertanya%20tentang%20tutorial%20EPC" target="_blank" rel="noopener" class="btn btn-wa"><svg viewBox="0 0 32 32"><path fill="currentColor" d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5 9.9 10 5.1 16 5.1s11 4.8 11 10.7-4.9 10.6-11 10.6zm6-7.9c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.8-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.6 4.9.8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>Tanya via WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> MAX Autoparts — Tutorial EPC</span>
+    <span>Panduan internal tim</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/6285780696102?text=Halo%2C%20saya%20ingin%20bertanya%20tentang%20tutorial%20EPC" target="_blank" rel="noopener" aria-label="Tanya via WhatsApp">
+  <svg viewBox="0 0 32 32"><path fill="currentColor" d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5 9.9 10 5.1 16 5.1s11 4.8 11 10.7-4.9 10.6-11 10.6zm6-7.9c-.3-.2-1.9-1-2.2-1.1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.8-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.6 4.9.8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
+  <span>Ada pertanyaan?</span>
+</a>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Orbit nodes along an arc
+  const icons = ['🚗','🔢','🔍','📘','⚙️','🧩','🛞','🔧','📋','📊','✅'];
+  const orbit = document.getElementById('orbit');
+  const n = icons.length, R = 380, cx = 430, cy = 400;
+  icons.forEach((ic,i)=>{
+    const a = Math.PI + (Math.PI * i/(n-1));
+    const x = cx + R*Math.cos(a), y = cy + R*Math.sin(a)*0.92;
+    const el = document.createElement('div');
+    el.className = 'node';
+    const rot = (i-(n-1)/2)*7;
+    el.style.left = x+'px'; el.style.top = y+'px'; el.style.setProperty('--r', rot+'deg');
+    el.innerHTML = '<span>'+ic+'</span>';
+    orbit.appendChild(el);
+  });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
